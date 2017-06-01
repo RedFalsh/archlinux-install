@@ -1,0 +1,53 @@
+VIM:
+1.序言        
+
+本文是本人在Ubuntu 16.04上Vim IDE搭建过程的总结。在Windows环境开发的小伙伴也许都知道sourceinsight这款编辑器，为了提高Linux下开发效率，本人搭建了类sourceinsight的IDE开发环境（勉强称作VIM IDE吧：））。
+
+         废话不多，先上图展示本人的VIM IDE。 一个窗口同时显示了4个子终端窗口（当然也可以有更多），每一个子终端窗口类似sourceinsight又切分成了3栏（左下Taglist栏-显示函数，宏等标签;左上filelist栏-显式代码文件目录文件结构; 右侧栏-代码编辑区）。 如果我们看着窗口字太小，没关系， 当编辑程序时候你可以选择4个子终端窗口中要编辑的那个终端单独放大全屏显示（terminator安装后Ctrl+shit+X），编辑完成之后仍然可以切换回来（terminator安装后Ctrl+shift+Z）。
+
+
+2. 配置过程
+
+     如果要完成以上显示效果，我们需要安装一些必要的工具和插件，下面将逐步展开。
+2.1 Terminator 安装
+
+      工具Terminator可以在一个窗口中显示多个终端窗口，并且可以按照用户的要求对窗口进行任意分割。
+
+      Ubuntu环境安装terminator工具命令为：sudo apt-get install terminator
+
+      Terminator常用快捷按键有：
+
+     1）Ctrl+Shift+E垂直分割窗口
+
+       2）Ctrl+Shift+O 水平分割窗口
+
+       3）Ctrl+Tab  在分割的窗口间切换
+
+       4）Ctrl+Shift+C/V 复制/粘贴
+
+       5）Ctrl+Shift+X 放大窗口到全屏
+
+       6）Ctrl+Shift+Z 从放大窗口回到多窗口
+
+     
+
+      注意：如果您对窗口风格不满意，可以右键->preferences进行必要设置和修改。比如修改快捷按键等等。
+2.2 vim 编辑器安装
+
+      Ubuntu环境安装terminator工具命令为： sudo apt-get install vim vim-scripts vim-doc
+
+     其中vim-scripts是vim的一些基本插件 ，vim安装之后紧接着应该个性化配置。Vim本身的系统配置文件夹是在/usr/share/vim/和/etc/vim/两个文件夹下。但是通常我们不会去改变这两个文件夹下的配置文件，而是在用户文件夹/home/user下建立自己的配置文件.vimrc然后对其配置，这里不再解释，后面我将附上我的vim配置。
+
+2.3 vim插件安装
+
+    vim常用插件有：1）vim-addons 2)ctags 3)cscope 4)winmanager 5)minibufexplorer 6)omnicppcomplete 7)AutoComplPop  8)echofunc 9)taglist
+
+2.3.1 vim-addons
+
+   通过vim-addons，我们可以管理vim插件。可通过命令sudo apt-get install vim-addon-manager手动安装。
+
+  查看插件状态 命令： vim-addons status
+
+  安装某个插件X命令（前提是在目录/home/user/.vim/下建立好了plugin和doc两个文件夹）：vim-addons install X
+
+

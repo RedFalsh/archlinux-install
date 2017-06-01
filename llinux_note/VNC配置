@@ -1,0 +1,26 @@
+客户端：
+sudo apt-get install xvnc4viewer
+启动：
+vncviewer
+输入服务器地址和vnc端口号：
+10.0.0.88::5901
+
+安装gnome：
+sudo apt-get install gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+然后修改~/.vnc/xstartup文件。这个文件一般在home目录下。
+
+#!/bin/sh  
+  
+# Uncomment the following two lines for normal desktop:  
+export XKL_XMODMAP_DISABLE=1  
+ unset SESSION_MANAGER  
+# exec /etc/X11/xinit/xinitrc  
+ unset DBUS_SESSION_BUS_ADDRESS  
+   
+ gnome-panel &  
+ gnmoe-settings-daemon &  
+ metacity &  
+ nautilus &  
+ gnome-terminal &  
+
+

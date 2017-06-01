@@ -1,0 +1,142 @@
+目的：内网主机B外网远程访问
+要求：一台拥有外网ip的服务器（主机A）：我这里用的是VPS（虚拟服务器）
+
+步骤：
+1.安装autossh：
+	suto apt-get install autossh
+2.在公网上生成公钥和私钥：
+	ssh-keygen
+	.......（一直按Enter，最后在～/.ssh/下生成密钥）
+	可以查看密钥位置：
+	ls ~/.ssh/
+3.复制主机B上生成的id_rsa.pub公钥到外网A主机上，并将内容加入到～/.ssh/autohorized_keys中：
+	ssh-copy-id root@182.61.56.114
+
+autossh用法：
+	auto -M [监视端口] -NfR [A主机上的端口号]:localhost:[B主机要转发的端口号] [A主机用户名]@[公网ip] 
+	ssh端口映射: 
+		autossh -M 1022 -NfR 10022:localhost:22 root@$R_host -i /home/xiong/.ssh/id_rsa  
+		#（-i /home/xiong/.ssh/id_rsa） 因为要用到密码，这里采用上面生成的公钥和密钥
+	其他端口映射（如vnc或者socket）: 
+		autossh -M 1001 -NfR 15901:localhost:5901 root@$R_host 
+		autossh -M 1002 -NfR 15902:localhost:5902 root@$R_host 
+		autossh -M 1003 -NfR 15903:localhost:5903 root@$R_host 
+		#（-i /home/xiong/.ssh/id_rsa） 因为要用到密码，这里采用上面生成的公钥和密钥
+
+autossh开机自启动步骤：
+1./etc/init.d/下面新建脚本文件：
+	cd /etc/init.d/
+	sudo vi autossh
+	注：脚本文件内容在最后面
+2.添加权限：
+	sudo chmod +x autossh
+3.添加到开机启动：
+	sudo update-rc.d autossh defaults
+4.测试一下：
+	sudo /etc/init.d/autossh start
+	如果成功的话即可重启，看看是否自动运行
+
+autossh自动登录脚本：
+
+#!/bin/bash
+#
+#chkconfig: 2345 80 90
+#
+# description:  Starts, stops and restart autossh service
+#
+# autossh startup Script
+ 
+export autossh=/usr/bin/autossh   #你linux系统内安装的autossh位置，这里一定要正确，不然会出错，不知道可用命令：dpkg -L autossh 查询 
+export AUTOSSH_LOGFILE=/usr/local/autossh/log/autossh.log
+export AUTOSSH_PIDFILE=/var/run/autossh.pid
+export AUTOSSH_POLL=180
+export AUTOSSH_FIRST_POLL=30
+export AUTOSSH_GATETIME=0
+export AUTOSSH_DEBUG=1
+ 
+user="root" #用户名
+R_host="182.61.56.114"#远程公网ip，或者你的域名
+ 
+ 
+ 
+start() {
+     # Do not start if there is no autossh.
+ 
+     if [ ! -x "$autossh" ];then
+         echo " Fail : $autossh not found."
+ 
+     else
+ 
+        if [ -f "$AUTOSSH_PIDFILE" ]; then
+           echo "  >>> autosh is already running ... "
+        fi
+ 
+        # 9998 监视端口    10086-在外网主机上起的端口  22-绑定的本地端口
+        $autossh -M 1590 -NfR 15900:localhost:22 root@$R_host -i /home/xiong/.ssh/id_rsa
+	$autossh -M 1591 -NfR 15901:localhost:5901 root@$R_host
+	$autossh -M 1592 -NfR 15902:localhost:5902 root@$R_host 
+
+        if [ $? -eq 0 ]; then
+           echo "  >>> Start autossh sucesses..."
+        fi 
+     fi
+}
+ 
+stop() {
+     #Do not stop if not found $AUTOSSH_PIDFILE
+ 
+     if [  -f  "$AUTOSSH_PIDFILE" ]; then
+ 
+        export pid=$(cat "$AUTOSSH_PIDFILE")
+        num=$(ps -ef|awk  '{if($2~/'$pid'/) print $2}'|wc -l)
+ 
+       if [[ $num -gt 0  ]]; then
+ 
+          ps -ef|awk  '{if($2~/'$pid'/) print $2}'|xargs kill
+          rm -f "$AUTOSSH_PIDFILE"
+          echo "  >>> Autossh stop sucesses..."
+       fi
+ 
+     else
+ 
+        echo "  >>> Autossh not running , exit .."
+ 
+     fi
+ 
+}
+ 
+status() {
+ 
+     if [  -f  "$AUTOSSH_PIDFILE" ]; then
+        export pid=$(cat $AUTOSSH_PIDFILE)
+        echo "  >>> autossh-daemon (pid "$pid") is running..."
+ 
+     else
+        echo "  >>> Autossh is is stopped. "
+     fi   
+}
+      
+restart() {
+ 
+        stop;
+        start
+}
+ 
+case "$1" in 
+   start)
+   start
+   ;;
+   stop)
+   stop
+   ;;
+   status)
+   status
+   ;;
+   restart)
+   restart
+   ;;
+   *)
+   echo $"Usage: $0 {start|stop|status|restart}"
+   exit 1
+   ;;
+esac

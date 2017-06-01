@@ -1,0 +1,119 @@
+1、卸载Vim GVIM
+
+sudo apt-get remove --purge vim (--purge 是完全删除，会连配置文件一起删除)
+sudo apt-get remove --purge vim-gtk vim-doc cscope
+
+sudo apt-get clean
+2、安装Vim GVIM
+
+sudo apt-get install vim
+
+sudo apt-get install vim-gtk vim-doc cscope
+
+安装ctags
+
+$sudo apt-get install exuberant-ctags
+
+$ctags --help
+
+$sudo apt-get install vim vim-scripts vim-doc
+
+$sudo apt-get install vim-addon-manager
+
+$vim-addons status         此命令可以查看系统已经安装的VIM插件状态
+
+$vim-addons install taglist  
+
+$vim-addons install winmanager
+
+$vim-addons install project 
+
+配置vim
+Linux下vim 默认的配置文件 /etc/vim/vimrc
+用户默认配置文件 ~/.vimrc
+如果想一次配置，所有用户都能使用，那就修改 /etc/vim/vimrc，如果只想当前用户可以使用，则修改 ~/.vimrc
+
+    set nocompatible  
+    set autoindent  
+    set shiftwidth=4  
+    set ignorecase  
+    set cindent  
+    set hls is  
+    set hlsearch  
+    set ts=4  
+    set history=100  
+    set syntax=c  
+    highlight Function cterm=bold,underline ctermbg=red ctermfg=green  
+    highlight TabLine term=underline cterm=bold ctermfg=9 ctermbg=4  
+    highlight TabLineSel term=bold cterm=bold ctermbg=Red ctermfg=yellow  
+    highlight Pmenu ctermbg=darkred  
+    highlight PmenuSel ctermbg=red ctermfg=yellow  
+    set ruler  
+    colorscheme desert  
+
+filetype plugin on
+let g:pydiction_location='~/.vim/after/ftplugin/pydiction/complete-dict'
+
+    filetype plugin on  
+    let g:winManagerWindowLayout='FileExplorer|TagList|BufExplorer'  
+    let g:winManagerWidth=35    "设置左栏的宽度  
+    "let Tlist_Auto_Open=1  
+    let Tlist_Ctags_Cmd = '/usr/bin/ctags' "设置ctags命令目录  
+    let Tlist_Show_One_File = 1 "不同时显示多个文件的tag，只显示当前文件的  
+    let Tlist_Exit_OnlyWindow =  1 "如果taglist窗口是最后一个窗口，则退出vim  
+    let Tlist_Use_Left_Window = 1 "让taglist窗口在右侧显示  
+    "F7 NERDTree   
+    map <F7> :NERDTreeToggle<CR>  
+    imap <F7> <ESC>:NERDTreeToggle<CR>  
+    map <F8> :WMToggle<CR>  
+    imap <F8> <ESC>:WMToggle<CR>  
+
+中文帮助文档
+1:打开命令行敲击下面命令(下载安装带有剪切板功能的Vim):　　
+
+sudo apt-get install vim-gui-common
+ 
+2:搞定了... ... ...现在再用Vi或者Vim命令编辑某个文件的话熟悉的界面又回来了.下面我们开始安装中文帮助文档.首先我们下载Vim的中文帮助文档,在命令行中敲击以下命令将中文帮助文档下载下来:
+ 
+wget http://sourceforge.net/projects/vimcdoc/files/vimcdoc/1.8.0/vimcdoc-1.8.0.tar.gz
+ 
+3:将下载下来的tar.gz解压缩:    www.2cto.com  
+ 
+tar zxvf vimcdoc-1.8.0.tar.gz
+ 
+4:进入vimcdoc-<version>目录找到INSTALL文件,cat一下能从中获得不少你想知道的信息,然后安装中文文档,它会自己找到安装目录进行安装,这里要强调一下,
+如果你是以普通用户安装它会安装在目录的.vim/doc....的文件夹内,如果以root用户安装,则会安装在usr/share...的文件夹中,小哼选择了root用户安装,毕竟linux是多用户操作系统:
+ 
+cat INSTALL
+./vimcdoc.sh -i
+
+
+
+python自动补全代码：
+git clone https://github.com/rkulla/pydiction.git
+
+#####################
+
+包括三个文件
+
+python_pydiction.vim #vim插件
+
+complete-dict #python关键字和模块列表，
+
+pydiction.py  #python脚本，可以添加更多的模块
+
+#1.查看家目录下是否有.vim目录，若没有则创建。
+
+mkdir  -p  ~/.vim/after/ftplugin/pydiction
+
+#2.把上面下载的三个文件放到指定的位置
+
+mv  python_pydiction.vim  ~/.vim/after/ftplugin/
+
+mv complete-dict pydiction.py  ~/.vim/after/ftplugin/pydiction/
+
+#3.修改 ~/.vimrc文件，若没有则创建，在该文件中添加下面两行。
+
+filetype plugin on
+
+let g:pydiction_location='~/.vim/after/ftplugin/pydiction/complete-dict'

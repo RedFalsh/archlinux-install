@@ -1,0 +1,22 @@
+matplotlib:
+	sudo apt-get install python-matplotlib 
+	sudo apt-get install python3-matplotlib
+numpy:
+	sudo apt-get install python-numpy 
+	sudo apt-get install python3-numpy
+scipy:
+	sudo apt-get install python-scipy 
+	sudo apt-get install python3-scipy
+pyqt5:
+	sudo apt-get install python3-pyqt5  
+ipython:
+	pip install ipython 安装python2的
+	pip3 install ipython 安装python3的
+源码安装：pyserial：
+	sudo python setup.py install --record files.txt
+	sudo python3 setup.py install --record files.txt
+--record files.txt：记录安装目录在当前源码目录下的files.txt文件
+查询串口号：
+	python -m serial.tools.list_ports
+列出串口信息：
+	udevadm info /dev/ttyUSB0

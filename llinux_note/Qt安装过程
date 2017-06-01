@@ -1,0 +1,36 @@
+qt安装过程：
+1、下载linux版本qt-opensource：
+下载地址：
+	1. 所有Qt版本下载地址：
+
+	http://download.qt.io/archive/qt/
+
+	2. 所有Qt Creator下载地址：
+
+	http://download.qt.io/archive/qtcreator/
+
+	3. 所有Qt VS开发插件下载地址:
+
+	http://download.qt.io/archive/vsaddin/
+
+	4. Qt相关下载大全
+
+	http://download.qt.io/
+
+2、cd到你下载的目录下：
+	sudo chmod a+x qt-opensource-linux-x86-5.5.0.run
+	sudo ./qt-opensource-linux-x86-5.5.0.run
+这里会弹出框qt安装对话框，按照对话框提示安装就可以了，默认会安装在/opt/目录下，如：/opt/Qt5.5.0/5.5/gcc.....
+3、修改.bashrc文件
+	sudo vi ~/.bashrc
+	在文件末尾添加：
+	#QT
+	export QTDIR=/opt/Qt5.5.0/5.5/gcc/      #这里是你安装的qt文件gcc目录
+	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${QTDIR}/lib
+	export PATH=${QTDIR}/bin:${PATH}
+
+4、将你安装的qt的qmake替换默认的qmake
+	sudo ln -s /opt/Qt5.5.0/5.5/gcc/bin/qmake /usr/bin/qmake
+
+
+sip安装命令：sudo apt-get install sip-dev
