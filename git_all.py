@@ -3,17 +3,16 @@
 
 
 class colorprint(object):
-
-    RED = '\033[31m'       # 红色
-    GREEN = '\033[32m'     # 绿色
-    YELLOW = '\033[33m'    # 黄色
-    BLUE = '\033[34m'      # 蓝色
-    FUCHSIA = '\033[35m'   # 紫红色
-    CYAN = '\033[36m'      # 青蓝色
-    WHITE = '\033[37m'     # 白色
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    FUCHSIA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
 
 #: no color
-    RESET = '\033[0m'      # 终端默认颜色
+    RESET = '\033[0m'
 
     def color_str(self, color, s):
         return '{}{}{}'.format(
@@ -70,6 +69,7 @@ class git:
     def __init__(self):
         self.username = os.popen("who | awk '{print $1}'").readlines()[0].replace('\n','')
         self.git_dir = ('/home/%s/git'%self.username)
+        self.python = 'python3.4'
 
     def mkdir(self):
         if not os.path.exists(self.git_dir):
@@ -97,7 +97,7 @@ class git:
         for setup in self.py_install_pkg:
             os.chdir('%s/%s'%(self.git_dir,setup))
             print(clr.green(os.getcwd()))
-            os.system('sudo python setup.py install')
+            os.system('sudo %s setup.py install'%self.python)
 
     def help(self):
         try:

@@ -9,7 +9,7 @@ import os
 class samba:
     def __init__(self):
         self.pkg = 'samba'
-        self.user= 'xiong'
+        self.user= 'john'
 
     def install(self):
         print('pacman -S samba')
