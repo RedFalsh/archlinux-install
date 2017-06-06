@@ -93,21 +93,32 @@ class git:
             os.system('git clone git@git.coding.net:%s/%s.git %s/%s'%(self.coding_username,py,self.git_dir,py))
             time.sleep(0.5)
 
-    def install(self):
+    def show(self):
         for setup in self.py_install_pkg:
             os.chdir('%s/%s'%(self.git_dir,setup))
             print(clr.green(os.getcwd()))
             os.system('sudo %s setup.py install'%self.python)
 
+    def show(self):
+        print(clr.blue('coding_py_pky:'))
+        for p in self.coding_py_pkg:
+            print(clr.green('%-20s%s'%(' ',p)))
+        print(clr.blue('py_install_pky:'))
+        for p in self.py_install_pkg:
+            print(clr.green('%-20s%s'%(' ',p)))
+        print(clr.blue('github_py_pkg:'))
+        for p in self.github_py_pkg:
+            print(clr.green('%-20s%s'%(' ',p)))
+
     def help(self):
         try:
-            opts, args = getopt.getopt(sys.argv[1:], "hrmgci", ["help", "remove","mkdir","github","coding","install"])
+            opts, args = getopt.getopt(sys.argv[1:], "hrmgcis", ["help", "remove","mkdir","github","coding","install","show"])
         except getopt.GetoptError:
             print('error')
         for o, a in opts:
             if o in ("-h", "--help"):
                 print('\t%-20s%s'%('-h or --help','show the help information'))
-                print('\t%-20s%s'%('-r or --remove','remove all dir'))
+                print('\t%-20s%s'%('-r or --remove','remove all dir under /home/username/git'))
                 print('\t%-20s%s'%('-m or --mkdir','mkdir /home/username/git'))
                 print('\t%-20s%s'%('-g or --github','git from github'))
                 print('\t%-20s%s'%('-c or --coding','git from coding'))
@@ -125,6 +136,9 @@ class git:
                 self.git_coding()
             if o in ("-i", "--install"):
                 self.install()
+            if o in ("-s", "--show"):
+                self.show()
+
 
 if __name__ == "__main__":
     g = git()
